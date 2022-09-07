@@ -1,0 +1,158 @@
+basePath: /
+definitions:
+  structures.UserAsk:
+    properties:
+      username:
+        type: string
+    type: object
+  structures.UserChangePassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+      username:
+        type: string
+    type: object
+  structures.UserReinitialize:
+    properties:
+      new_password:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  structures.UserUnlock:
+    properties:
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    name: Cloud dev team
+    url: https://github.com/be-ys-cloud
+  description: DORY (stands for Domain Operator - Recover by Yourself) is a tool who
+    enable user to unlock their AD account, and change/reinitialize password. This
+    API is NOT intented to be RESTful !
+  license:
+    name: AGPL
+    url: https://www.gnu.org/licenses/agpl-3.0.fr.html
+  title: Dory-API
+  version: 1.0.0
+paths:
+  /ask_reinitialization:
+    post:
+      description: Ask server to send email with a link to reset an account password.
+      parameters:
+      - description: User (only username is required)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserAsk'
+      responses:
+        "200":
+          description: OK - Check your mailbox
+        "400":
+          description: Missing username in payload
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Ask server to send email with a link to reset an account password.
+      tags:
+      - reinitialization
+  /ask_unlock:
+    post:
+      description: Ask server to send email with a link to unlock an account password.
+      parameters:
+      - description: User (only username is required)
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserAsk'
+      responses:
+        "200":
+          description: OK - Check your mailbox
+        "400":
+          description: Missing username in payload
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Ask server to send email with a link to unlock an account.
+      tags:
+      - unlock
+  /change_password:
+    post:
+      description: Change a user's password.
+      parameters:
+      - description: User data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserChangePassword'
+      responses:
+        "200":
+          description: OK - Mail changed
+        "400":
+          description: Invalid payload
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Change a user's password.
+      tags:
+      - change_password
+  /reinitialize:
+    post:
+      description: Reinitialize a user's password.
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserReinitialize'
+      responses:
+        "200":
+          description: OK - Password changed
+        "400":
+          description: Missing data in payload
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Reinitialize a user's password.
+      tags:
+      - reinitialization
+  /unlock:
+    post:
+      description: Unlock a user.
+      parameters:
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserUnlock'
+      responses:
+        "200":
+          description: OK - User unlocked
+        "400":
+          description: Missing data in payload
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Unlock a user.
+      tags:
+      - unlock
+schemes:
+- https
+swagger: "2.0"
