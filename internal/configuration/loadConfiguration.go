@@ -31,4 +31,8 @@ func init() {
 		logrus.Fatal("Malformed configuration.json file. Please check documentation. Program is now exiting.")
 	}
 	_ = file.Close()
+
+	if Configuration.LDAPServer.Kind != "openldap" && Configuration.LDAPServer.Kind != "ad" {
+		logrus.Fatal("Unsupported LDAP Server ! Please set ldap_server.kind to \"openldap\" or \"ad\".")
+	}
 }

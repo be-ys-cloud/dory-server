@@ -1,6 +1,6 @@
 # DORY - Server
 
-Expose a simple API to manipulate AD.
+Expose a simple API to manipulate Active Directory or OpenLDAP server.
 * Password reinitialization
 * Password changer
 * Account Unlocking
@@ -13,7 +13,7 @@ Must be name `configuration.json`. Content :
 
 ```json
 {
-  "active_directory": {
+  "ldap_server": {
     "admin": {
       "username": "username-that-can-manipulate-users-on-ad",
       "password": "password"
@@ -21,6 +21,7 @@ Must be name `configuration.json`. Content :
     "base_dn": "base_dn",
     "filter_on": "(&(objectClass=person)(samaccountname=%s))",
     "address": "ad_address",
+    "kind": "ad|openldap",
     "port": 636,
     "skip_tls_verify": true,
     "email_field": "mail"
@@ -35,6 +36,7 @@ Must be name `configuration.json`. Content :
     "sender_address": "dory_noreply@localhost.local",
     "password": "Password (if any) to authenticate",
     "subject": "DORY",
+    "skip_tls_verify": true,
     "sender_name": "DORY"
   },
   "front_address": "https://dory.local/"

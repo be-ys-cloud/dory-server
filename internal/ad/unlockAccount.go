@@ -9,7 +9,7 @@ import (
 )
 
 func UnlockAccount(username string) error {
-	l, err := helpers.GetSession(configuration.Configuration.ActiveDirectory.Address, configuration.Configuration.ActiveDirectory.Port, configuration.Configuration.ActiveDirectory.SkipTLSVerify)
+	l, err := helpers.GetSession(configuration.Configuration.LDAPServer.Address, configuration.Configuration.LDAPServer.Port, configuration.Configuration.LDAPServer.SkipTLSVerify)
 	if err != nil {
 		logrus.Warnln("UnlockAccount service : Could not connect to server")
 		return err
@@ -18,13 +18,13 @@ func UnlockAccount(username string) error {
 	defer l.Close()
 
 	// Search user in database
-	err = helpers.BindUser(l, configuration.Configuration.ActiveDirectory.Admin.Username, configuration.Configuration.ActiveDirectory.Admin.Password)
+	err = helpers.BindUser(l, configuration.Configuration.LDAPServer.Admin.Username, configuration.Configuration.LDAPServer.Admin.Password)
 	if err != nil {
 		logrus.Warnln("UnlockAccount service : Could not login to Active Directory : Bad AD Password supplied")
 		return err
 	}
 
-	user, err := helpers.GetUser(l, configuration.Configuration.ActiveDirectory.BaseDN, configuration.Configuration.ActiveDirectory.FilterOn, username)
+	user, err := helpers.GetUser(l, configuration.Configuration.LDAPServer.BaseDN, configuration.Configuration.LDAPServer.FilterOn, username)
 	if err != nil {
 		logrus.Warnln("UnlockAccount service : Could not find user")
 		return err
