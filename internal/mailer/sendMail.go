@@ -2,6 +2,7 @@ package mailer
 
 import (
 	"bytes"
+	"crypto/tls"
 	"github.com/be-ys-cloud/dory-server/internal/configuration"
 	"github.com/be-ys-cloud/dory-server/internal/structures"
 	"github.com/sirupsen/logrus"
@@ -45,11 +46,57 @@ func SendMail(templateName string, destEmail string, args interface{}) error {
 	}
 
 	// Sending email.
-	err = smtp.SendMail(configuration.Configuration.MailServer.Address+":"+strconv.Itoa(configuration.Configuration.MailServer.Port), auth, configuration.Configuration.MailServer.SenderAddress, to, body.Bytes())
+	err = sendMail(auth, configuration.Configuration.MailServer.SenderAddress, to, body.Bytes())
 	if err != nil {
 		logrus.Warnln("Failed to send mail to user ! error was : " + err.Error())
 		return &structures.CustomError{Text: "failed to send mail", HttpCode: 500}
 	}
 
 	return nil
+}
+
+func sendMail(a smtp.Auth, from string, to []string, msg []byte) error {
+	c, err := smtp.Dial(configuration.Configuration.MailServer.Address + ":" + strconv.Itoa(configuration.Configuration.MailServer.Port))
+
+	if err != nil {
+		return err
+	}
+	if ok, _ := c.Extension("STARTTLS"); ok {
+		config := &tls.Config{
+			InsecureSkipVerify: configuration.Configuration.MailServer.SkipTLSVerify,
+		}
+
+		if err = c.StartTLS(config); err != nil {
+			return err
+		}
+
+	}
+	if a != nil {
+		if ok, _ := c.Extension("AUTH"); ok {
+			if err = c.Auth(a); err != nil {
+				return err
+			}
+		}
+	}
+	if err = c.Mail(from); err != nil {
+		return err
+	}
+	for _, addr := range to {
+		if err = c.Rcpt(addr); err != nil {
+			return err
+		}
+	}
+	w, err := c.Data()
+	if err != nil {
+		return err
+	}
+	_, err = w.Write(msg)
+	if err != nil {
+		return err
+	}
+	err = w.Close()
+	if err != nil {
+		return err
+	}
+	return c.Quit()
 }
