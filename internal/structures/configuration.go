@@ -15,9 +15,14 @@ type Configuration struct {
 		EmailField    string `json:"email_field"`
 	} `json:"ldap_server"`
 	Server struct {
-		Port     int    `json:"port"`
-		BasePath string `json:"base_path"`
-	}
+		Port         int    `json:"port"`
+		BasePath     string `json:"base_path"`
+		DatabasePath string `json:"database_path"`
+	} `json:"server"`
+	TOTP struct {
+		CustomServiceName string `json:"custom_service_name"`
+		Secret            string `json:"secret"`
+	} `json:"totp"`
 	MailServer struct {
 		Address       string `json:"address"`
 		Port          int    `json:"port"`
@@ -27,5 +32,13 @@ type Configuration struct {
 		Subject       string `json:"subject"`
 		SkipTLSVerify bool   `json:"skip_tls_verify"`
 	} `json:"mail_server"`
-	FrontAddress string `json:"front_address"`
+	FrontAddress string   `json:"front_address"`
+	Features     Features `json:"features"`
+}
+
+type Features struct {
+	DisableUnlock                   bool `json:"disable_unlock"`
+	DisablePasswordUpdate           bool `json:"disable_password_update"`
+	DisablePasswordReinitialization bool `json:"disable_password_reinitialization"`
+	DisableTOTP                     bool `json:"disable_totp"`
 }

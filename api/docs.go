@@ -23,78 +23,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/ask_reinitialization": {
-            "post": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Ask server to send email with a link to reset an account password.",
-                "tags": [
-                    "reinitialization"
-                ],
-                "summary": "Ask server to send email with a link to reset an account password.",
-                "parameters": [
-                    {
-                        "description": "User (only username is required)",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/structures.UserAsk"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK - Check your mailbox"
-                    },
-                    "400": {
-                        "description": "Missing username in payload"
-                    },
-                    "500": {
-                        "description": "An error occured."
-                    }
-                }
-            }
-        },
-        "/ask_unlock": {
-            "post": {
-                "security": [
-                    {
-                        "BasicAuth": []
-                    }
-                ],
-                "description": "Ask server to send email with a link to unlock an account password.",
-                "tags": [
-                    "unlock"
-                ],
-                "summary": "Ask server to send email with a link to unlock an account.",
-                "parameters": [
-                    {
-                        "description": "User (only username is required)",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/structures.UserAsk"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK - Check your mailbox"
-                    },
-                    "400": {
-                        "description": "Missing username in payload"
-                    },
-                    "500": {
-                        "description": "An error occured."
-                    }
-                }
-            }
-        },
         "/change_password": {
             "post": {
                 "security": [
@@ -167,6 +95,88 @@ const docTemplate = `{
                 }
             }
         },
+        "/request/{kind}": {
+            "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Ask server to send email with a link to reset an account password, or unlock it.",
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Ask server to send email with a link to reset an account password, or unlock it.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Kind of request : reinitialize or unlock.",
+                        "name": "kind",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserAsk"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK - Check your mailbox"
+                    },
+                    "400": {
+                        "description": "Missing username in payload"
+                    },
+                    "500": {
+                        "description": "An error occurred."
+                    }
+                }
+            }
+        },
+        "/totp/create": {
+            "post": {
+                "security": [
+                    {
+                        "BasicAuth": []
+                    }
+                ],
+                "description": "Verify a TOTP for this user.",
+                "tags": [
+                    "totp"
+                ],
+                "summary": "Verify a TOTP token for this user.",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserVerifyTOTP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TOTP valid"
+                    },
+                    "400": {
+                        "description": "Invalid payload"
+                    },
+                    "401": {
+                        "description": "TOTP invalid"
+                    },
+                    "500": {
+                        "description": "An error occured."
+                    }
+                }
+            }
+        },
         "/unlock": {
             "post": {
                 "security": [
@@ -205,6 +215,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "structures.Authentication": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "totp": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.TOTPToken": {
+            "type": "object",
+            "properties": {
+                "TOTP": {
+                    "type": "string"
+                }
+            }
+        },
         "structures.UserAsk": {
             "type": "object",
             "properties": {
@@ -227,13 +256,24 @@ const docTemplate = `{
                 }
             }
         },
+        "structures.UserCreateTOTP": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "structures.UserReinitialize": {
             "type": "object",
             "properties": {
-                "new_password": {
-                    "type": "string"
+                "authentication": {
+                    "$ref": "#/definitions/structures.Authentication"
                 },
-                "token": {
+                "new_password": {
                     "type": "string"
                 },
                 "username": {
@@ -244,7 +284,18 @@ const docTemplate = `{
         "structures.UserUnlock": {
             "type": "object",
             "properties": {
-                "token": {
+                "authentication": {
+                    "$ref": "#/definitions/structures.Authentication"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.UserVerifyTOTP": {
+            "type": "object",
+            "properties": {
+                "totp": {
                     "type": "string"
                 },
                 "username": {
