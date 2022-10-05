@@ -24,11 +24,17 @@ func AskMail(user structures.UserAsk, kind string) error {
 
 	//Send mail to user
 	err = mailer.SendMail(kind, email, struct {
-		Name string
-		URL  string
+		Name     string
+		URL      string
+		Username string
+		Token    string
+		LDAP     string
 	}{
-		Name: user.Username,
-		URL:  configuration.Configuration.FrontAddress + kind + "?user=" + url.QueryEscape(user.Username) + "&token=" + url.QueryEscape(key),
+		Name:     user.Username,
+		URL:      configuration.Configuration.FrontAddress,
+		Username: url.QueryEscape(user.Username),
+		Token:    url.QueryEscape(key),
+		LDAP:     configuration.Configuration.LDAPServer.Address,
 	})
 
 	if err != nil {

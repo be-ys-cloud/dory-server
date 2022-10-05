@@ -1,19 +1,45 @@
 <!doctype html>
-<html lang="fr" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="fr">
 <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <style type="text/css">
-        body {font-size: 12px; font-family: Arial, Helvetica, sans-serif; color:#76777b; margin:0;padding:0}
-        table {margin:0 auto;}
-        td {padding:0 10px;}
-        p span {font-size:12px;}
-        thead td img {margin:15px 0}
-        tbody td {
-            padding:10px 40px;
+        body {
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #76777b;
+            margin: 0;
+            padding: 0
         }
-        h1 {font-size:16px; text-transform: uppercase; font-weight: 300;margin:0;color:white;}
+
+        table {
+            margin: 0 auto;
+        }
+
+        td {
+            padding: 0 10px;
+        }
+
+        p span {
+            font-size: 12px;
+        }
+
+        thead td img {
+            margin: 15px 0
+        }
+
+        tbody td {
+            padding: 10px 40px;
+        }
+
+        h1 {
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin: 0;
+            color: white;
+        }
     </style>
 
 </head>
@@ -25,8 +51,12 @@
         <td bgcolor="#012f2d">
             <table cellspacing="0" cellpadding="0" width="800">
                 <tr>
+                    <td>
+                        <img src="{{.URL}}/images/logo.png" width="200"/>
+                    </td>
                     <td align="right">
-                        <h1>DORY </h1>
+                        <h1>Gestion de votre compte LDAP</h1>
+                        <h1>LDAP Account Management</h1>
                     </td>
                 </tr>
             </table>
@@ -39,13 +69,30 @@
             <table cellspacing="0" cellpadding="0" width="800">
                 <tr>
                     <td>
-                        <p>Hi, {{.Name}}
+                        <p>Bonjour, {{.Name}}</p>
+                        <p>Vous avez demandé le déverrouillage de votre compte sur {{.LDAP}}. Pour continuez la
+                            procédure, cliquez ici : <a href="{{.URL}}unlock?user={{.Username}}&token={{.Token}}">{{.URL}}unlock?user={{.Username}}&token={{.Token}}</a>.
                         </p>
-                        <p>You asked to unlock your Active Directory account. To confirm your request, please click here: <a href="{{.URL}}">{{.URL}}</a>.</p>
-                        <p>Regards,</p>
-                        <p>Your IT Team</p>
-                        <p></p>
-                        <p><i>Important note: if you didn't ask for an account unlock, please avoid this email.</i></p>
+                        <p>Cordialement,</p>
+                        <hr>
+                        <p>Hi, {{.Name}}</p>
+                        <p>You asked to unlock your account on {{.LDAP}}. To complete this action, click here: <a href="{{.URL}}unlock?user={{.Username}}&token={{.Token}}">{{.URL}}unlock?user={{.Username}}&token={{.Token}}</a>.
+                        </p>
+                        <p>Cordially,</p>
+                        <br/>
+                        <p><i>Ce mail est destiné à {{.Name}}. Si vous recevez ce message par erreur, merci de ne pas en
+                            tenir compte. Si vous recevez ce mail alors que vous n'avez jamais demandé cette action,
+                            changez votre mot de passe et contactez votre service informatique.</i></p>
+                        <p><i>Ce mail a été généré automatiquement par DORY. Vous recevez ce message car vous disposez
+                            d'un
+                            compte sur {{.LDAP}}. Si vous ne souhaitez plus recevoir de mail venant de DORY, veuillez
+                            contacter le service informatique responsable de la gestion de votre serveur LDAP.</i></p>
+                        <hr>
+                        <p><i>This mail is intended {{.Name}}. If you are not {{.Name}}, please discard this email. If
+                            you never asked for this operation on your account, please change your password and reach
+                            your IT Team.</i></p>
+                        <p><i>This mail were sent automatically because you have an account on {{.LDAP}}. If you don't
+                            want to receive these kind of mail anymore, please reach your IT Team.</i></p>
                     </td>
                 </tr>
             </table>

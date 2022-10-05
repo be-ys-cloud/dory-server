@@ -70,18 +70,18 @@
                 <tr>
                     <td>
                         <p>Bonjour, {{.Name}}</p>
-                        <p>Votre compte LDAP est désormais déverrouillé sur {{.LDAP}}.</p>
+                        <p>L'ensemble de vos tokens TOTP actifs ont été révoqués. Vous pouvez dès à présent en générer
+                            un nouveau sur <a href="{{.URL}}">{{.URL}}</a>.</p>
                         <p>Cordialement,</p>
                         <hr>
                         <p>Hi, {{.Name}}</p>
-                        <p>Your LDAP account is now unlocked {{.LDAP}}.</p>
+                        <p>All of your TOTP tokens have been revoked. You can generate a new one on <a href="{{.URL}}">{{.URL}}</a>.</p>
                         <p>Cordially,</p>
                         <br/>
                         <p><i>Ce mail est destiné à {{.Name}}. Si vous recevez ce message par erreur, merci de ne pas en
                             tenir compte. Si vous recevez ce mail alors que vous n'avez jamais demandé cette action,
                             changez votre mot de passe et contactez votre service informatique.</i></p>
-                        <p><i>Ce mail a été généré automatiquement par DORY. Vous recevez ce message car vous disposez
-                            d'un
+                        <p><i>Ce mail a été généré automatiquement par DORY. Vous recevez ce message car vous disposez d'un
                             compte sur {{.LDAP}}. Si vous ne souhaitez plus recevoir de mail venant de DORY, veuillez
                             contacter le service informatique responsable de la gestion de votre serveur LDAP.</i></p>
                         <hr>
