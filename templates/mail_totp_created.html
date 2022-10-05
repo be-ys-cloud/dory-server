@@ -70,11 +70,13 @@
                 <tr>
                     <td>
                         <p>Bonjour, {{.Name}}</p>
-                        <p>Votre compte LDAP est désormais déverrouillé sur {{.LDAP}}.</p>
+                        <p>Un token TOTP a été créé pour votre compte. Si vous n'avez pas effectué cette action, changez
+                            votre mot de passe, et révoquez votre token TOTP sur <a href="{{.URL}}">{{.URL}}</a>.</p>
                         <p>Cordialement,</p>
                         <hr>
                         <p>Hi, {{.Name}}</p>
-                        <p>Your LDAP account is now unlocked on {{.LDAP}}.</p>
+                        <p>A TOTP token has been created for your account. If this wasn't your action, please
+                            change your password and revoke your TOTP token on<a href="{{.URL}}">{{.URL}}</a>.</p>
                         <p>Cordially,</p>
                         <br/>
                         <p><i>Ce mail est destiné à {{.Name}}. Si vous recevez ce message par erreur, merci de ne pas en

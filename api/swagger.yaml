@@ -1,5 +1,17 @@
 basePath: /
 definitions:
+  structures.Authentication:
+    properties:
+      token:
+        type: string
+      totp:
+        type: string
+    type: object
+  structures.TOTPToken:
+    properties:
+      TOTP:
+        type: string
+    type: object
   structures.UserAsk:
     properties:
       username:
@@ -14,18 +26,32 @@ definitions:
       username:
         type: string
     type: object
+  structures.UserCreateTOTP:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   structures.UserReinitialize:
     properties:
+      authentication:
+        $ref: '#/definitions/structures.Authentication'
       new_password:
-        type: string
-      token:
         type: string
       username:
         type: string
     type: object
   structures.UserUnlock:
     properties:
-      token:
+      authentication:
+        $ref: '#/definitions/structures.Authentication'
+      username:
+        type: string
+    type: object
+  structures.UserVerifyTOTP:
+    properties:
+      totp:
         type: string
       username:
         type: string
@@ -43,50 +69,6 @@ info:
   title: Dory-API
   version: 1.0.0
 paths:
-  /ask_reinitialization:
-    post:
-      description: Ask server to send email with a link to reset an account password.
-      parameters:
-      - description: User (only username is required)
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/structures.UserAsk'
-      responses:
-        "200":
-          description: OK - Check your mailbox
-        "400":
-          description: Missing username in payload
-        "500":
-          description: An error occured.
-      security:
-      - BasicAuth: []
-      summary: Ask server to send email with a link to reset an account password.
-      tags:
-      - reinitialization
-  /ask_unlock:
-    post:
-      description: Ask server to send email with a link to unlock an account password.
-      parameters:
-      - description: User (only username is required)
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/structures.UserAsk'
-      responses:
-        "200":
-          description: OK - Check your mailbox
-        "400":
-          description: Missing username in payload
-        "500":
-          description: An error occured.
-      security:
-      - BasicAuth: []
-      summary: Ask server to send email with a link to unlock an account.
-      tags:
-      - unlock
   /change_password:
     post:
       description: Change a user's password.
@@ -131,6 +113,59 @@ paths:
       summary: Reinitialize a user's password.
       tags:
       - reinitialization
+  /request/{kind}:
+    post:
+      description: Ask server to send email with a link to reset an account password,
+        or unlock it.
+      parameters:
+      - description: 'Kind of request : reinitialize or unlock.'
+        in: path
+        name: kind
+        required: true
+        type: string
+      - description: User
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserAsk'
+      responses:
+        "200":
+          description: OK - Check your mailbox
+        "400":
+          description: Missing username in payload
+        "500":
+          description: An error occurred.
+      security:
+      - BasicAuth: []
+      summary: Ask server to send email with a link to reset an account password,
+        or unlock it.
+      tags:
+      - demand
+  /totp/create:
+    post:
+      description: Verify a TOTP for this user.
+      parameters:
+      - description: User data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserVerifyTOTP'
+      responses:
+        "200":
+          description: TOTP valid
+        "400":
+          description: Invalid payload
+        "401":
+          description: TOTP invalid
+        "500":
+          description: An error occured.
+      security:
+      - BasicAuth: []
+      summary: Verify a TOTP token for this user.
+      tags:
+      - totp
   /unlock:
     post:
       description: Unlock a user.

@@ -70,11 +70,11 @@
                 <tr>
                     <td>
                         <p>Bonjour, {{.Name}}</p>
-                        <p>Votre compte LDAP est désormais déverrouillé sur {{.LDAP}}.</p>
+                        <p>Vous avez demandé la réinitialisation de votre mot de passe sur {{.LDAP}}. Pour continuez la procédure, cliquez ici : <a href="{{.URL}}reinitialize?user={{.Username}}&token={{.Token}}">{{.URL}}reinitialize?user={{.Username}}&token={{.Token}}</a>.</p>
                         <p>Cordialement,</p>
                         <hr>
                         <p>Hi, {{.Name}}</p>
-                        <p>Your LDAP account is now unlocked on {{.LDAP}}.</p>
+                        <p>You asked to reinitialize your password on {{.LDAP}}. To complete this action, click here: <a href="{{.URL}}reinitialize?user={{.Username}}&token={{.Token}}">{{.URL}}reinitialize?user={{.Username}}&token={{.Token}}</a>.</p>
                         <p>Cordially,</p>
                         <br/>
                         <p><i>Ce mail est destiné à {{.Name}}. Si vous recevez ce message par erreur, merci de ne pas en
