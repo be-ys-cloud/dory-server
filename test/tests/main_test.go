@@ -14,6 +14,7 @@ import (
 )
 
 var baseUrl string
+var mailUrl string
 
 // TestMain contains only the minimum required to start test suite.
 func TestMain(m *testing.M) {
@@ -25,6 +26,7 @@ func TestMain(m *testing.M) {
 
 	// Set variables that will be used by other test files !
 	baseUrl = "http://127.0.0.1:" + server.GetPort("8000/tcp") + "/"
+	mailUrl = "http://127.0.0.1:" + mail.GetPort("1080/tcp") + "/api/emails"
 
 	// Run tests
 	_ = m.Run()
