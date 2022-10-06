@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"github.com/be-ys-cloud/dory-server/internal/authentication/totp"
 	"github.com/be-ys-cloud/dory-server/internal/configuration"
 	"github.com/be-ys-cloud/dory-server/internal/ldap"
@@ -15,10 +14,10 @@ func CreateTOTP(user structures.UserCreateTOTP) (structures.TOTPToken, error) {
 
 	validPassword, err := ldap.IsPasswordValid(user.Username, user.Password)
 	if err != nil {
-		return structures.TOTPToken{}, err
+		return structures.TOTPToken{}, &structures.CustomError{HttpCode: 401, Text: err.Error()}
 	}
 	if !validPassword {
-		return structures.TOTPToken{}, errors.New("invalid password")
+		return structures.TOTPToken{}, &structures.CustomError{HttpCode: 401, Text: err.Error()}
 	}
 
 	userDN, err := ldap.GetUserDN(user.Username)

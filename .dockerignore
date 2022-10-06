@@ -1,0 +1,5 @@
+test/
+configuration.local.json
+configuration.json
+database.sql
+identifier.sqlite

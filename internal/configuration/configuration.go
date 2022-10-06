@@ -47,6 +47,10 @@ func init() {
 		Configuration.Server.DatabasePath = "./database.sql"
 	}
 
+	if Configuration.Server.Port == 0 {
+		Configuration.Server.Port = 8000
+	}
+
 	// If TOTP is enabled, check that secret is not "" and have a decent length, and populate default name
 	if !Configuration.Features.DisableTOTP {
 		if Configuration.TOTP.CustomServiceName == "" {
