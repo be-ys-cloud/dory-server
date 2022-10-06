@@ -37,5 +37,5 @@ type UserVerifyTOTP struct {
 }
 
 type TOTPToken struct {
-	TOTP string `json:"TOTP"`
+	TOTP string `json:"totp"`
 }
