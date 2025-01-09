@@ -43,5 +43,9 @@ func AskMail(user structures.UserAsk, kind string) error {
 		return &structures.CustomError{Text: "email gateway is not reachable, try again later", HttpCode: 503}
 	}
 
+	if configuration.Configuration.Features.EnableAudit {
+		logrus.WithField("user", user.Username).Infof("[AUDIT] Sent mail to user for kind (%s)", kind)
+	}
+
 	return nil
 }

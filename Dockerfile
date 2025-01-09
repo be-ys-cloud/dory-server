@@ -7,9 +7,6 @@ WORKDIR /go/src/dory
 #RUN go get
 RUN apk add --no-cache git
 
-#RUN go mod init
-WORKDIR /go/src/dory
-
 RUN apk add build-base
 
 COPY . /go/src/dory
