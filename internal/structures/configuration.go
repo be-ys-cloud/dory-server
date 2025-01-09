@@ -41,4 +41,16 @@ type Features struct {
 	DisablePasswordUpdate           bool `json:"disable_password_update"`
 	DisablePasswordReinitialization bool `json:"disable_password_reinitialization"`
 	DisableTOTP                     bool `json:"disable_totp"`
+	EnableAudit                     bool `json:"enable_audit"`
+}
+
+type FeaturesDTO struct {
+	DisableUnlock                   bool `json:"disable_unlock"`
+	DisablePasswordUpdate           bool `json:"disable_password_update"`
+	DisablePasswordReinitialization bool `json:"disable_password_reinitialization"`
+	DisableTOTP                     bool `json:"disable_totp"`
+}
+
+type ConfigurationDTO struct {
+	Features FeaturesDTO `json:"features"`
 }

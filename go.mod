@@ -6,7 +6,7 @@ require (
 	github.com/go-ldap/ldap v3.0.3+incompatible
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gorilla/mux v1.8.0
-	github.com/mattn/go-sqlite3 v1.14.15
+	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/ory/dockertest/v3 v3.9.1
 	github.com/pquerna/otp v1.3.0
 	github.com/sirupsen/logrus v1.9.0

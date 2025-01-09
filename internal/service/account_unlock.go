@@ -21,13 +21,15 @@ func UnlockAccount(user structures.UserUnlock) error {
 		logrus.Warnf("Error while unlocking user %s. Error was: %s", user.Username, err.Error())
 		return &structures.CustomError{Text: "an error occurred while unlocking account", HttpCode: 500}
 	}
+	if configuration.Configuration.Features.EnableAudit {
+		logrus.WithField("user", user.Username).Info("[AUDIT] Unlocked account for user")
+	}
 
 	//Removing key
 	token.DeleteKey(user.Username)
 
 	//Modification done, sending mail
 	email, err := ldap.GetUserMail(user.Username)
-
 	if err != nil {
 		logrus.Warnf("Could not send unlocked account mail to user %s because there is no email associated to it on Active Directory.", user.Username)
 	} else {

@@ -21,6 +21,9 @@ func ReinitializePassword(user structures.UserReinitialize) error {
 		logrus.Warn("Error while reinitializing password for user %s. Error was: %s", user.Username, err.Error())
 		return &structures.CustomError{Text: "an error occurred while reinitializing password", HttpCode: 500}
 	}
+	if configuration.Configuration.Features.EnableAudit {
+		logrus.WithField("user", user.Username).Info("[AUDIT] Reinitialized password for user")
+	}
 
 	//Removing key
 	token.DeleteKey(user.Username)

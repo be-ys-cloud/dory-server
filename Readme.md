@@ -40,7 +40,8 @@ Must be name `configuration.json`. Content :
     "disable_unlock": false,
     "disable_password_update": false,
     "disable_password_reinitialization": false,
-    "disable_totp": false
+    "disable_totp": false,
+    "enable_audit": false
   },
   "mail_server": {
     "address": "server_addr",
@@ -62,7 +63,7 @@ Must be name `configuration.json`. Content :
 * `totp` : Enables TOTP feature : users can create a TOTP that can be used in replacement of email verification pipeline. This might be useful, especially if your LDAP server manages your mail server.
   *  `secret` : Must be a secret string, known only by server, which is at least 25 characters long. **Losing or changing this key will make all TOTP unusable !**
   * `custom_service_name` : Change the default value (which is `DORY - your_ldap_address`) to a custom value. Only useful for display.
-* `features` : Allow users to disable some features of the tool. By default, all features are enabled (except `unlock` feature on OpenLDAP).
+* `features` : Allow users to disable or enable some features of the tool. By default, all features are enabled, except `unlock` feature on OpenLDAP and audit logs.
 
 **Important note:** When using TOTP, this server **requires** a SQLite backend to store user-specific secrets.
 

@@ -12,16 +12,17 @@ func ChangePassword(user structures.UserChangePassword) error {
 
 	// Send request to AD
 	err := ldap.ChangePassword(user.Username, user.OldPassword, user.NewPassword)
-
 	if err != nil {
 		return err
+	}
+	if configuration.Configuration.Features.EnableAudit {
+		logrus.WithField("user", user.Username).Info("[AUDIT] Changed password for user")
 	}
 
 	// Send email
 	email, err := ldap.GetUserMail(user.Username)
-
 	if err != nil {
-		logrus.Warnf("Could not change password changed mail to user %s because there is no email associated to it on Active Directory.", user.Username)
+		logrus.Warnf("Could not send password changed mail to user %s because there is no email associated to it on Active Directory.", user.Username)
 	} else {
 		_ = mailer.SendMail("mail_info_changed", email, struct {
 			Name string
