@@ -18,7 +18,7 @@ func ReinitializePassword(user structures.UserReinitialize) error {
 	//Token is valid, now modifying password !
 	err := ldap.ReinitializePassword(user.Username, user.NewPassword)
 	if err != nil {
-		logrus.Warn("Error while reinitializing password for user %s. Error was: %s", user.Username, err.Error())
+		logrus.Warnf("Error while reinitializing password for user %s. Error was: %s", user.Username, err.Error())
 		return &structures.CustomError{Text: "an error occurred while reinitializing password", HttpCode: 500}
 	}
 	if configuration.Configuration.Features.EnableAudit {
