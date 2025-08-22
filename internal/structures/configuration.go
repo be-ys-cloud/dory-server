@@ -1,5 +1,9 @@
 package structures
 
+import (
+	"golang.org/x/text/language"
+)
+
 type Configuration struct {
 	LDAPServer struct {
 		Admin struct {
@@ -34,6 +38,12 @@ type Configuration struct {
 	} `json:"mail_server"`
 	FrontAddress string   `json:"front_address"`
 	Features     Features `json:"features"`
+	PasswordPolicies []PasswordPolicy `json:"password_policies"`
+}
+
+type PasswordPolicy struct {
+	Name map[language.Tag]string `json:"name"`
+	Content map[language.Tag]string `json:"content"`
 }
 
 type Features struct {
@@ -53,4 +63,5 @@ type FeaturesDTO struct {
 
 type ConfigurationDTO struct {
 	Features FeaturesDTO `json:"features"`
+	PasswordPolicies []PasswordPolicy `json:"password_policies"`
 }
