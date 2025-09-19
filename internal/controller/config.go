@@ -8,7 +8,7 @@ import (
 )
 
 func Config(w http.ResponseWriter, _ *http.Request) {
-	d, _ := json.Marshal(configurationToConfigurationDTO(configuration.Configuration).Features)
+	d, _ := json.Marshal(configurationToConfigurationDTO(configuration.Configuration))
 	_, _ = w.Write(d)
 }
 
@@ -19,5 +19,7 @@ func configurationToConfigurationDTO(config structures.Configuration) structures
 			DisablePasswordUpdate:           config.Features.DisablePasswordUpdate,
 			DisablePasswordReinitialization: config.Features.DisablePasswordReinitialization,
 			DisableTOTP:                     config.Features.DisableTOTP,
-		}}
+		},
+		PasswordPolicies: config.PasswordPolicies,
+	}
 }

@@ -52,7 +52,15 @@ Must be name `configuration.json`. Content :
     "skip_tls_verify": true,
     "sender_name": "DORY"
   },
-  "front_address": "https://dory.local/"
+  "front_address": "https://dory.local/",
+  "password_policies": [
+    {
+      "name": { "en": "Password policy", "fr": "Politique de mot de passes" },
+      "content": {
+        "en": "Password must contain at least 20 characters."
+        "fr": "Le mot de passe doit contenir au moins 20 caractères."
+    }
+  ]
 }
 ```
 
@@ -64,6 +72,8 @@ Must be name `configuration.json`. Content :
   *  `secret` : Must be a secret string, known only by server, which is at least 25 characters long. **Losing or changing this key will make all TOTP unusable !**
   * `custom_service_name` : Change the default value (which is `DORY - your_ldap_address`) to a custom value. Only useful for display.
 * `features` : Allow users to disable or enable some features of the tool. By default, all features are enabled, except `unlock` feature on OpenLDAP and audit logs.
+* `password_policies`: list of password policies, stored as objects with a `name` and a `content`.
+  Both `name` and `content` are dictionnaries where the *key* is the language tag (e.g. "en"), and the *value* is the displayed text.
 
 **Important note:** When using TOTP, this server **requires** a SQLite backend to store user-specific secrets.
 
