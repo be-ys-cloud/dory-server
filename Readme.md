@@ -57,8 +57,9 @@ Must be name `configuration.json`. Content :
     {
       "name": { "en": "Password policy", "fr": "Politique de mot de passes" },
       "content": {
-        "en": "Password must contain at least 20 characters."
+        "en": "Password must contain at least 20 characters.",
         "fr": "Le mot de passe doit contenir au moins 20 caractères."
+      }
     }
   ]
 }
