@@ -3,6 +3,7 @@ package mailer
 import (
 	"bytes"
 	"crypto/tls"
+	"fmt"
 	"github.com/be-ys-cloud/dory-server/internal/configuration"
 	"github.com/be-ys-cloud/dory-server/internal/structures"
 	"github.com/sirupsen/logrus"
@@ -30,7 +31,7 @@ func SendMail(templateName string, destEmail string, args interface{}) error {
 
 	headers := make(map[string]string)
 	headers["Subject"] = configuration.Configuration.MailServer.Subject
-	headers["From"] = configuration.Configuration.MailServer.SenderName
+	headers["From"] = fmt.Sprintf("%s <%s>", configuration.Configuration.MailServer.SenderName, configuration.Configuration.MailServer.SenderAddress)
 	headers["To"] = destEmail
 	headers["MIME-version"] = "1.0"
 	headers["Content-Type"] = "text/html"
